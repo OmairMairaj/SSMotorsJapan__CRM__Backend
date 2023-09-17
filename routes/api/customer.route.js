@@ -158,5 +158,27 @@ router.get('/get-customers', async (req, res) => {
 })
 
 
+router.post(`/updateCustomer/:id`, validationHelpers.validateUpdateUserInput, async (req, res) => {
+    try {
+        const customerId = req.params.id;
+        const updatedData = req.body;
+
+        const updatedCustomer = await customerModel.findOneAndUpdate(
+            { _id: customerId },
+            { $set: updatedData },
+            { new: true }
+        );
+
+        if (!updatedCustomer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+
+        res.json({ message: 'Customer updated successfully', data: updatedCustomer });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
+
+
 
 module.exports = router;

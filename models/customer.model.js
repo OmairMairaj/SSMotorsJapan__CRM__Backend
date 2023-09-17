@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const userModel = require("./user.model");
 
 const customerSchema = new mongoose.Schema({
     customer_id: {
@@ -66,4 +67,6 @@ const customerSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("customer", customerSchema);
+const customerModel = mongoose.model('customer', customerSchema);
+
+module.exports = customerModel;

@@ -76,4 +76,8 @@ userSchema.post('findOneAndUpdate', async function (updatedUser) {
     }
 });
 
-module.exports = mongoose.model("user", userSchema);
+// Create the userModel using the schema
+const userModel = mongoose.model('user', userSchema);
+
+// Export the userModel
+module.exports = userModel;
