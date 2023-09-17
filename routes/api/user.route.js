@@ -156,25 +156,26 @@ router.post('/logout', async (req, res) => {
 
 // reset password logged in - body: oldPassword, newPass1, newPass2
 // router.post('/reset-password', authHelpers.verifyUserTokenMiddleware,  async (req, res) => {
+//     // console.log(req.body)
 
 //     let errors = []
 
-//     Old Password Check
+//     // Old Password Check
 //     if (validator.isEmpty(req.body.oldPassword)) {
 //         errors.push("Old password is required")
 //     }
 
-//     New Password 1 Check
+//     // New Password 1 Check
 //     if (validator.isEmpty(req.body.newPass1)) {
 //         errors.push("New password is required")
 //     }
 
-//     New Password 2 Check
+//     // New Password 2 Check
 //     if (validator.isEmpty(req.body.newPass2)) {
 //         errors.push("Confirm password field is required")
 //     }
 
-//     New Passwords Match Check
+//     // New Passwords Match Check
 //     if (!validator.equals(req.body.newPass1, req.body.newPass2)) {
 //         errors.push("New passwords must match")
 //     }
@@ -220,7 +221,7 @@ router.post('/logout', async (req, res) => {
 
 // request reset password - body: email
 router.post('/request-reset-password', async (req, res) => {
-
+    // console.log(req);
     try {
         let thisUser = await userModel.findOne({ email: req.body.email })
 
@@ -241,9 +242,10 @@ router.post('/request-reset-password', async (req, res) => {
                     message: 'Password reset email failed to send.'
                 })
             } else {
+                // console.log(mailInfo)
                 return res.status(200).json({
                     error: false,
-                    message: 'Password reset email sent successfully.'
+                    message: 'Password reset email sent successfully. Please check your inbox.'
                 })
             }
         })
@@ -256,69 +258,70 @@ router.post('/request-reset-password', async (req, res) => {
 })
 
 // reset password check conf code
-// router.get('/reset-password/check-validity:confCode', async (req, res) => {
-//     try{
-//         let thisUser = await userModel.findOne({confCode: req.params.confCode})
+router.get('/reset-password/check-validity:confCode', async (req, res) => {
+    console.log(req.params.confCode)
+    try{
+        let thisUser = await userModel.findOne({confCode: req.params.confCode})
 
-//         // return if user not found
-//         if(isEmpty(thisUser)){
-//             return res.status(200).json({
-//                 error: true,
-//                 message: 'User not found.'
-//             })
-//         }
+        // return if user not found
+        if(isEmpty(thisUser)){
+            return res.status(200).json({
+                error: true,
+                message: 'User not found.'
+            })
+        }
 
-//         if(thisUser.userStatus === 'pending'){
-//             return res.status(200).json({
-//                 error: true,
-//                 message: 'User not verified. Please check your email.'
-//             })
-//         }
+        if(thisUser.userStatus === 'pending'){
+            return res.status(200).json({
+                error: true,
+                message: 'User not verified. Please check your email.'
+            })
+        }
 
-//         return res.status(200).json({
-//             error: false,
-//             message: 'User found.',
-//             data: {email: thisUser.email, fullname: thisUser.fullname}
-//         })   
-//     } catch(err){
-//         return res.status(200).json({
-//             error: true,
-//             message: err.message
-//         })
-//     }
-// })
+        return res.status(200).json({
+            error: false,
+            message: 'User found.',
+            data: {email: thisUser.email, fullname: thisUser.fullname}
+        })   
+    } catch(err){
+        return res.status(200).json({
+            error: true,
+            message: err.message
+        })
+    }
+})
 
 // reset password logged out - body: newPass1, newPass2
-// router.post('/reset-password/:confCode', async (req, res) => {
+router.post('/reset-password/:confCode', async (req, res) => {
 
-//     if(req.body.newPass1 != req.body.newPass2){
-//         return res.status(200).json({
-//             error: true,
-//             message: 'New passwords do not match.'
-//         })
-//     }
+    if(req.body.newPass1 != req.body.newPass2){
+        return res.status(200).json({
+            error: true,
+            message: 'New passwords do not match.'
+        })
+    }
 
-//     try{
-//         let updated = await userModel.updateOne({confCode: req.params.confCode}, {password: await bcrypt.hash(req.body.newPass1, 10), confCode: authHelpers.genConfCode()})
+    try{
+        let updated = await userModel.updateOne({confCode: req.params.confCode}, {password: await bcrypt.hash(req.body.newPass1, 10), confCode: authHelpers.genConfCode()})
 
-//         if(updated.modifiedCount < 0){
-//             return res.status(200).json({
-//                 error: true,
-//                 message: 'Password reset failed. Please try again later.'
-//             })
-//         } else {
-//             return res.status(200).json({
-//                 error: false,
-//                 message: 'Password reset successfully.'
-//             })
-//         }
-//     } catch(err){
-//         return res.status(200).json({
-//             error: true,
-//             message: err.message
-//         })
-//     }
-// })
+        if(updated.modifiedCount < 0){
+            return res.status(200).json({
+                error: true,
+                message: 'Password reset failed. Please try again later.'
+            })
+        } else {
+            return res.status(200).json({
+                error: false,
+                message: 'Password reset successfully.'
+            })
+        }
+    } catch(err){
+        return res.status(200).json({
+            error: true,
+            message: err.message
+        })
+    }
+})
 
 
 // get user info

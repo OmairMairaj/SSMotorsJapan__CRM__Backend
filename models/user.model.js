@@ -63,9 +63,9 @@ userSchema.post('findOneAndUpdate', async function (updatedUser) {
                 customer.email = updatedUser.email;
                 customer.contact = updatedUser.contact;
 
-                if (updatedUser.userStatus !== 'pending') {
+                // if (updatedUser.userStatus !== 'pending') {
                     customer.customerStatus = updatedUser.userStatus; // Update customer status
-                } 
+                // } 
 
                 // Save the updated customer document
                 await customer.save();

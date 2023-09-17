@@ -73,7 +73,7 @@ router.post('/signup', validationHelpers.validateRegisterInput, async (req, res)
             address: address,
             country: country,
             city: city,
-            customerStatus: "active",
+            customerStatus: "pending",
             salesPerson: salesPerson,
             registerAs: registerAs,
             prefCurrency: prefCurrency

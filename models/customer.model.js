@@ -56,8 +56,8 @@ const customerSchema = new mongoose.Schema({
     customerStatus: {
         type: String,
         required: true,
-        enum: ['retainer', 'active', 'suspended'],
-        default: 'active'
+        enum: ['pending', 'retainer', 'active', 'suspended'],
+        default: 'pending'
     },
     datecreated: {
         type: Date,
