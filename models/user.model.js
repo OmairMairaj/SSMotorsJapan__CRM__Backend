@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const customerModel = require("./customer.model");
 
 const userSchema = new mongoose.Schema({
     user_id: {
@@ -45,36 +44,36 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: Date.now()
     }
-})
+});
 
 
 // Define a middleware function to update customer fields when specific user fields change
-userSchema.post('findOneAndUpdate', async function (updatedUser) {
-    // Check if the updated user's role is 'client'
-    // console.log("updatedUser", updatedUser);
-    if (updatedUser.role === 'client') {
-        try {
-            // Fetch the corresponding customer document based on user_id
-            const customer = await customerModel.findOne({ customer_id: updatedUser.user_id });
+// userSchema.post('findOneAndUpdate', async function (updatedUser) {
+//     // Check if the updated user's role is 'client'
+//     // console.log("updatedUser", updatedUser);
+//     if (updatedUser.role === 'client') {
+//         try {
+//             // Fetch the corresponding customer document based on user_id
+//             const customer = await customerModel.findOne({ customer_id: updatedUser.user_id });
 
-            if (customer) {
-                // Update the customer document fields that need to be synced with the user
-                customer.fullname = updatedUser.fullname;
-                customer.email = updatedUser.email;
-                customer.contact = updatedUser.contact;
+//             if (customer) {
+//                 // Update the customer document fields that need to be synced with the user
+//                 customer.fullname = updatedUser.fullname;
+//                 customer.email = updatedUser.email;
+//                 customer.contact = updatedUser.contact;
 
-                // if (updatedUser.userStatus !== 'pending') {
-                    customer.customerStatus = updatedUser.userStatus; // Update customer status
-                // } 
+//                 // if (updatedUser.userStatus !== 'pending') {
+//                 customer.customerStatus = updatedUser.userStatus; // Update customer status
+//                 // } 
 
-                // Save the updated customer document
-                await customer.save();
-            }
-        } catch (error) {
-            console.error('Error updating customer document:', error);
-        }
-    }
-});
+//                 // Save the updated customer document
+//                 await customer.save();
+//             }
+//         } catch (error) {
+//             console.error('Error updating customer document:', error);
+//         }
+//     }
+// });
 
 // Create the userModel using the schema
 const userModel = mongoose.model('user', userSchema);
