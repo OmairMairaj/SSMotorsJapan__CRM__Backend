@@ -122,7 +122,8 @@ router.post('/login', validationHelpers.validateLoginInput, async (req, res) => 
                     error: false,
                     message: 'User logged in successfully.',
                     user: {
-                        userId: thisUser._id,
+                        _id: thisUser._id,
+                        userId: thisUser.user_id,
                         fullname: thisUser.fullname,
                         email: thisUser.email,
                         role: thisUser.role,

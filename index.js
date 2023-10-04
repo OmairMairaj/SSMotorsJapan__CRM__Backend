@@ -80,9 +80,9 @@ app.use("/api/customer", customerRoute)
 // app.use("/api/underValue", underValueRoute)
 // app.use("/api/mtgl", mtglRoute)
 
-app.get("/", (req, res) => {
-  res.send("Server running");
-})
+  app.get("/", (req, res) => {
+    res.send("Server running");
+  })
 
 // GET API route to download CSV file
 // app.get('/metrics', (req, res) => {
