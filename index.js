@@ -14,7 +14,7 @@ const customerRoute = require("./routes/api/customer.route");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 app.use(cors({ credentials: true, origin: true }));
 app.use(cookieParser({ sameSite: 'none' }))
 
